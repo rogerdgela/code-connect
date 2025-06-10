@@ -1,6 +1,6 @@
 import { CardPost } from "@/components/CardPost";
 import logger from "@/logger";
-
+import styles from "./page.module.css";
 
 async function getAllPosts() {
   const response = await fetch("http://localhost:3042/posts");
@@ -18,7 +18,7 @@ export default async function Home() {
   const posts = await getAllPosts();
 
   return (
-    <main>
+    <main className={styles.grid}>
       {posts.map(post => <CardPost key={post.id} post={post} />)}
     </main>
   );
