@@ -22,8 +22,8 @@ export default async function Home() {
     <main className={styles.grid}>
       {posts.map(post => <CardPost key={post.id} post={post} />)}
       <div className={styles.pagination}>
-        {prev && <Link href={`?page=${prev}`} className={styles.pageLink}>Anterior</Link>}
-        {next && <Link href={`?page=${next}`} className={styles.pageLink}>Próximo</Link>}
+        {prev && <Link href={`?page=${prev}`} className={styles.pageLink}>Página Anterior</Link>}
+        {next && <Link href={`?page=${next}`} className={styles.pageLink}>Próxima Página</Link>}
       </div>
     </main>
   );
