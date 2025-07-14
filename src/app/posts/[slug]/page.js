@@ -25,8 +25,8 @@ const PagePost = async ({ params }) => {
 
   return (
     <div>
-      <h1>{post.title}</h1>
-      <p>{post.body}</p>
+      <h1 style={{ color: "white" }}>{post.title}</h1>
+      <p style={{ color: "white" }}>{post.body}</p>
     </div>
   );
 }
