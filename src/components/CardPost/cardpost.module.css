@@ -12,6 +12,7 @@
 
 .header figure {
     margin: 0;
+    position: relative;
 }
 
 .body {
@@ -45,6 +46,5 @@
 
 .link {
     text-decoration: none;
-    color: inherit;
     cursor: pointer;
 }

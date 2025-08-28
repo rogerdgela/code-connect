@@ -1,50 +1,45 @@
-import logger from "@/logger";
-import { remark } from "remark";
-import html from "remark-html";
+import logger from "@/logger"
+import { remark } from 'remark';
+import html from 'remark-html';
+
+import styles from './page.module.css'
+import { CardPost } from "@/components/CardPost";
+
 
 async function getPostBySlug(slug) {
-  const response = await fetch(`http://localhost:3042/posts?slug=${slug}`);
-  if (!response.ok) {
-    logger.error("Algo deu errado ao buscar os posts");
-    return {};
-  }
+    const url = `http://localhost:3042/posts?slug=${slug}`
+    const response = await fetch(url)
+    if (!response.ok) {
+        logger.error('Ops, alguma coisa correu mal')
+        return {}
+    }
+    logger.info('Posts obtidos com sucesso')
+    const data = await response.json()
+    if (data.length == 0) {
+        return {}
+    }
 
-  logger.info("Post obtido com sucesso");
+    const post = data[0];
 
-  const data = await response.json();
-  if (!data || data.length === 0) {
-    return {};
-  }
+    const processedContent = await remark()
+        .use(html)
+        .process(post.markdown);
+    const contentHtml = processedContent.toString();
 
-  const post = data[0];
+    post.markdown = contentHtml
 
-  const processedContent = await remark()
-    .use(html)
-    .process(post.markdown || "");
-  const contentHtml = processedContent.toString();
-
-  post.markdown = contentHtml;
-
-  return post;
+    return post
 }
 
 const PagePost = async ({ params }) => {
-  const post = await getPostBySlug(params.slug);
+    const post = await getPostBySlug(params.slug)
+    return (<div>
+        <CardPost post={post} highlight />
+        <h3 className={styles.subtitle}>Código:</h3>
+        <div className={styles.code}>
+            <div dangerouslySetInnerHTML={{ __html: post.markdown }} />
+        </div>
+    </div>)
+}
 
-  if (!post) {
-    return <p>Post não encontrado</p>;
-  }
-
-  return (
-    <div>
-      <h1 style={{ color: "white" }}>{post.title}</h1>
-      <div
-        style={{ padding: 16, background: "white" }}
-        dangerouslySetInnerHTML={{ __html: post.markdown }}
-      />
-      <p style={{ color: "white" }}>{post.body}</p>
-    </div>
-  );
-};
-
-export default PagePost;
+export default PagePost
